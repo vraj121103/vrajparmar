@@ -298,21 +298,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
             const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const subject = formData.get('subject');
-            const message = formData.get('message');
             
-            // Here you can add your form submission logic
-            // For now, we'll just show an alert
-            alert(`Thank you ${name}! Your message has been sent. I'll get back to you soon!`);
-            
-            // Reset form
-            this.reset();
+            // Only prevent default if not a Netlify form
+            if (!this.hasAttribute('data-netlify')) {
+                e.preventDefault();
+                
+                const name = formData.get('name');
+                alert(`Thank you ${name}! Your message has been sent. I'll get back to you soon!`);
+                this.reset();
+            }
+            // If it's a Netlify form, let it submit naturally
         });
     }
 
