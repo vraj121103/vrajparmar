@@ -240,18 +240,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (scrollY > sectionTop - window.innerHeight + 200 && scrollY < sectionTop + sectionHeight) {
                 skillProgress.forEach(progress => {
                     if (!progress.classList.contains('animated')) {
-                        const width = progress.style.width;
-                        progress.style.width = '0';
-                        setTimeout(() => {
-                            progress.style.width = width;
-                            progress.classList.add('animated');
-                        }, 100);
+                        const targetWidth = progress.getAttribute('style').match(/width:\s*(\d+)%/);
+                        if (targetWidth) {
+                            progress.setAttribute('data-width', targetWidth[1] + '%');
+                            progress.style.width = '0';
+                            setTimeout(() => {
+                                progress.style.width = targetWidth[1] + '%';
+                                progress.classList.add('animated');
+                            }, 100);
+                        }
                     }
                 });
             }
         }
     }
 
+    // Initial trigger for skills in view
+    animateSkills();
     window.addEventListener('scroll', animateSkills);
 
     // ========================================
